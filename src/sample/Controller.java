@@ -6,6 +6,6 @@ public class Controller {
 
     @FXML
     public void initialize() {
-
+        int i = 0;
     }
 }
