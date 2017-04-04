@@ -286,4 +286,12 @@ public abstract class Alg {
         return Math.log(a);
     }
 
+    public static double[] addForwardNum(double f, double[] to) {
+        int len = to.length;
+        double[] res = new double[len + 1];
+        System.arraycopy(to, 0, res, 1, len);
+        res[0] = f;
+        return res;
+    }
+
 }
