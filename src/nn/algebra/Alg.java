@@ -124,8 +124,8 @@ public abstract class Alg {
     }
 
     public static double[] mult(double[][] a, double[] b) throws IllegalArgumentException{
-        int h = a[0].length;
-        int la = a.length;
+        int h = a.length;
+        int la = a[0].length;
         int lb = b.length;
         double[] res = new double[h];
         if (la != lb) {
@@ -135,7 +135,7 @@ public abstract class Alg {
         for (int i = 0; i < h; i++) {
                 sum = 0.0;
                 for (int k = 0; k < la; k++) {
-                    sum += a[k][i] * b[k];
+                    sum += a[i][k] * b[k];
                 }
                 res[i] = sum;
         }
