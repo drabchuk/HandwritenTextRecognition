@@ -261,6 +261,19 @@ public abstract class Alg {
         return res;
     }
 
+    public static double[] sub(double[] a, double[] b) throws IllegalArgumentException{
+        int ha = a.length;
+        int hb = b.length;
+        double[] res = new double[ha];
+        if (ha != hb) {
+            throw new IllegalArgumentException("Matrices sizes not equals!");
+        }
+        for (int i = 0; i < ha; i++) {
+                res[i] = a[i] - b[i];
+        }
+        return res;
+    }
+
     public static double[][] sub(double a, double[][] b) throws IllegalArgumentException{
         int w = b[0].length;
         int h = b.length;
@@ -291,6 +304,13 @@ public abstract class Alg {
         double[] res = new double[len + 1];
         System.arraycopy(to, 0, res, 1, len);
         res[0] = f;
+        return res;
+    }
+
+    public static double[] removeForwardNum(double[] to) {
+        int len = to.length;
+        double[] res = new double[len - 1];
+        System.arraycopy(to, 1, res, 0, len - 1);
         return res;
     }
 

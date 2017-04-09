@@ -33,6 +33,24 @@ public class DeepFeedforwardNN extends NeuralNetwork {
         this.theta = theta;
     }
 
+    /**
+     * return z [0] and a [1]
+     * */
+    public double[][][] forwardPropagation(double[] features) {
+        double[][][] za = new double[2][depth][];
+        double[] a = features;
+        za[0][0] = features;
+        for (int i = 0; i < depth - 1; i++) {
+            a = addForwardNum(1.0, a);
+            za[1][i] = a;
+            double[] z = mult(theta[i], a);
+            za[0][i + 1] = z;
+            a = sigmoid(z);
+        }
+        za[1][depth - 1] = a;
+        return za;
+    }
+
     @Override
     public double[] predict(double[] features) {
         double[] a = features;
@@ -65,4 +83,15 @@ public class DeepFeedforwardNN extends NeuralNetwork {
         NeuralWriter.getWriter().start(file, depth, layerSizes, theta);
     }
 
+    public int getDepth() {
+        return depth;
+    }
+
+    public int[] getLayerSizes() {
+        return layerSizes;
+    }
+
+    public double[][][] getTheta() {
+        return theta;
+    }
 }

@@ -12,10 +12,12 @@ import static nn.algebra.Alg.sub;
  */
 public class DFFNNTrainer extends NNTrainer {
 
-    int gradientDescentSteps = 10;
+    private int gradientDescentSteps = 10;
+    private DeepFeedforwardNN nn;
 
-    public DFFNNTrainer(NeuralNetwork nn, double[][] tx, double[][] ty) {
-        super(nn, tx, ty);
+    public DFFNNTrainer(DeepFeedforwardNN nn, double[][] tx, double[][] ty) {
+        super(tx, ty);
+        this.nn = nn;
     }
 
     @Override
@@ -23,8 +25,42 @@ public class DFFNNTrainer extends NNTrainer {
 
     }
 
-    private double[][][] grad() {
+    public double[][][] grad() {
+        int depth = nn.getDepth();
+        int[] layerSizes = nn.getLayerSizes();
+        double[][][] grad = new double[depth][][];
+        for (int i = 0; i < depth - 1; i++) {
+            grad[i] = new double[layerSizes[i + 1]][layerSizes[i] + 1];
+        }
+
+        int m = tx.length;
+        double[][][] za;
+        double[][] z;
+        double[][] a;
+        double[][] delta = new double[depth][];
+        for (int i = 0; i < m; i++) {
+            za = nn.forwardPropagation(tx[i]);
+            z = za[0];
+            a = za[1];
+            delta[depth - 1] = sub(a[depth - 1], ty[m]);
+            for (int j = depth - 2; j > 0 ; j--) {
+                delta[j] = mult(nn.getTheta()[j], delta[j + 1]);
+            }
+        }
+
         return null;
+    }
+
+    public double[] reshapeGrad() {
+        return null;
+    }
+
+    public double[] reshapeTheta() {
+        return null;
+    }
+
+    public void setTheta(double[] newTheta) {
+
     }
 
     private double cost() {

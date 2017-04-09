@@ -5,12 +5,10 @@ package nn;
  */
 public abstract class NNTrainer {
 
-    protected NeuralNetwork nn;
     protected double[][] tx;
     protected double[][] ty;
 
-    public NNTrainer(NeuralNetwork nn, double[][] tx, double[][] ty) {
-        this.nn = nn;
+    public NNTrainer(double[][] tx, double[][] ty) {
         this.tx = tx;
         this.ty = ty;
     }
