@@ -41,7 +41,7 @@ public class TrainingWindowController {
             trainingProperties.removeAll();
             trainingProperties.clear();
             trainingProperties.add(new TrainingView("Input", ""));
-            for (int i = 0; i < Integer.parseInt(newValue); i++) {
+            for (int i = 0; i < Integer.parseInt(newValue) - 2; i++) {
                 trainingProperties.add(new TrainingView("Size " + i, ""));
             }
             trainingProperties.add(new TrainingView("Output", ""));
