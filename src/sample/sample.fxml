@@ -19,7 +19,7 @@
       <Button fx:id="chooseButton1" layoutX="506.0" layoutY="64.0" mnemonicParsing="false" text="Choose file" />
       <Button layoutX="348.0" layoutY="205.0" mnemonicParsing="false" text="Test NN" />
       <Label layoutX="34.0" layoutY="264.0" text="Result" />
-      <TextField layoutX="82.0" layoutY="260.0" prefHeight="25.0" prefWidth="33.0" />
+      <TextField editable="false" layoutX="82.0" layoutY="260.0" prefHeight="25.0" prefWidth="33.0" />
       <Label layoutX="115.0" layoutY="264.0" text="\% error" />
       <Button fx:id="chooseButton11" layoutX="506.0" layoutY="100.0" mnemonicParsing="false" text="Choose file" />
       <TextField editable="false" layoutX="350.0" layoutY="100.0" />
