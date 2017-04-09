@@ -38,29 +38,89 @@ public class DFFNNTrainer extends NNTrainer {
         double[][] z;
         double[][] a;
         double[][] delta = new double[depth][];
+        double[]d;
         for (int i = 0; i < m; i++) {
             za = nn.forwardPropagation(tx[i]);
             z = za[0];
             a = za[1];
-            delta[depth - 1] = sub(a[depth - 1], ty[m]);
-            for (int j = depth - 2; j > 0 ; j--) {
-                delta[j] = mult(nn.getTheta()[j], delta[j + 1]);
+            delta[depth - 1] = sub(a[depth - 1], ty[i]);
+            for (int j = depth - 1; j > 0; j--) {
+                d = mult(nn.getTheta()[j - 1], "t", delta[j]);
+                d = removeForwardNum(d);
+                delta[j - 1] = dotMult(d, sigmoidGrad(z[j - 1]));
+                double[][] thetaGrad = mult(delta[j], a[j - 1], "t");
+                grad[j - 1] = sum(grad[j - 1], thetaGrad);
             }
+
         }
 
-        return null;
+        for (int j = 0; j < depth - 1; j++) {
+            grad[j] = dotDiv(m, grad[j]);
+        }
+
+
+
+        return grad;
     }
 
     public double[] reshapeGrad() {
-        return null;
+        double[][][] grad = this.grad();
+        int depth = nn.getDepth();
+        int[] layerSizes = nn.getLayerSizes();
+        int length = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            length += (layerSizes[i] + 1) * layerSizes[i + 1];
+        }
+        double[] res = new double[length];
+        int position = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            for (int j = 0; j < layerSizes[i + 1]; j++) {
+                System.arraycopy(grad[i][j], 0, res, position, layerSizes[i] + 1);
+                position += layerSizes[i] + 1;
+            }
+        }
+        return res;
     }
 
     public double[] reshapeTheta() {
-        return null;
+        double[][][] theta = nn.getTheta();
+        int depth = nn.getDepth();
+        int[] layerSizes = nn.getLayerSizes();
+        int length = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            length += (layerSizes[i] + 1) * layerSizes[i + 1];
+        }
+        double[] res = new double[length];
+        int position = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            for (int j = 0; j < layerSizes[i + 1]; j++) {
+                System.arraycopy(theta[i][j], 0, res, position, layerSizes[i] + 1);
+                position += layerSizes[i] + 1;
+            }
+        }
+        return res;
     }
 
     public void setTheta(double[] newTheta) {
-
+        int depth = nn.getDepth();
+        int[] layerSizes = nn.getLayerSizes();
+        double[][][] theta = new double[depth][][];
+        for (int i = 0; i < depth - 1; i++) {
+            theta[i] = new double[layerSizes[i + 1]][layerSizes[i] + 1];
+        }
+        int length = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            length += (layerSizes[i] + 1) * layerSizes[i + 1];
+        }
+        double[] res = new double[length];
+        int position = 0;
+        for (int i = 0; i < depth - 1; i++) {
+            for (int j = 0; j < layerSizes[i + 1]; j++) {
+                System.arraycopy(newTheta, position, theta[i][j], 0, layerSizes[i] + 1);
+                position += layerSizes[i] + 1;
+            }
+        }
+        nn.setTheta(theta);
     }
 
     private double cost() {

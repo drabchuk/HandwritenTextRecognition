@@ -94,4 +94,8 @@ public class DeepFeedforwardNN extends NeuralNetwork {
     public double[][][] getTheta() {
         return theta;
     }
+
+    public void setTheta(double[][][] theta) {
+        this.theta = theta;
+    }
 }

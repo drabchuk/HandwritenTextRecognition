@@ -8,8 +8,7 @@ import java.util.Random;
 public abstract class Alg {
 
 
-
-    public static double[][] mult(double[][] a, double[][] b) throws IllegalArgumentException{
+    public static double[][] mult(double[][] a, double[][] b) throws IllegalArgumentException {
         int h = a.length;
         int w = b[0].length;
         int la = a[0].length;
@@ -31,7 +30,7 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] mult(double[][] a, double[][] b, String transpose) throws IllegalArgumentException{
+    public static double[][] mult(double[][] a, double[][] b, String transpose) throws IllegalArgumentException {
         int h = a.length;
         int w = b.length;
         int la = a[0].length;
@@ -53,7 +52,7 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] mult(double[][] a, String transpose, double[][] b) throws IllegalArgumentException{
+    public static double[][] mult(double[][] a, String transpose, double[][] b) throws IllegalArgumentException {
         int h = a[0].length;
         int w = b[0].length;
         int la = a.length;
@@ -75,7 +74,70 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] dotMult(double a, double[][] b) throws IllegalArgumentException{
+    public static double[] mult(double[][] a, double[] b) throws IllegalArgumentException {
+        int h = a.length;
+        int la = a[0].length;
+        int lb = b.length;
+        double[] res = new double[h];
+        if (la != lb) {
+            throw new IllegalArgumentException("Matrices not multipliable!");
+        }
+        double sum;
+        for (int i = 0; i < h; i++) {
+            sum = 0.0;
+            for (int k = 0; k < la; k++) {
+                sum += a[i][k] * b[k];
+            }
+            res[i] = sum;
+        }
+        return res;
+    }
+
+    public static double[] mult(double[][] a, String transpose, double[] b) throws IllegalArgumentException {
+        int h = a[0].length;
+        int la = a.length;
+        int lb = b.length;
+        double[] res = new double[h];
+        if (la != lb) {
+            throw new IllegalArgumentException("Matrices not multipliable!");
+        }
+        double sum;
+        for (int i = 0; i < h; i++) {
+            sum = 0.0;
+            for (int k = 0; k < la; k++) {
+                sum += a[k][i] * b[k];
+            }
+            res[i] = sum;
+        }
+        return res;
+    }
+
+    public static double[][] mult(double[] a, double[] b, String transpose) throws IllegalArgumentException {
+        int h = a.length;
+        int w = b.length;
+        double[][] res = new double[h][w];
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                res[i][j] = a[i] * b[j];
+            }
+        }
+        return res;
+    }
+
+    public static double mult(double[] a, double[] b) throws IllegalArgumentException {
+        int h = a.length;
+        int w = b.length;
+        if (h != w) {
+            throw new IllegalArgumentException("Matrices not multipliable!");
+        }
+        double res = 0;
+        for (int i = 0; i < h; i++) {
+            res += a[i] * b[i];
+        }
+        return res;
+    }
+
+    public static double[][] dotMult(double a, double[][] b) throws IllegalArgumentException {
         int h = b.length;
         int w = b[0].length;
         double[][] res = new double[h][w];
@@ -88,7 +150,16 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] dotDiv(double a, double[][] b) throws IllegalArgumentException{
+    public static double[] dotMult(double a, double[] b) throws IllegalArgumentException {
+        int h = b.length;
+        double[] res = new double[h];
+        for (int i = 0; i < h; i++) {
+            res[i] = a * b[i];
+        }
+        return res;
+    }
+
+    public static double[][] dotDiv(double a, double[][] b) throws IllegalArgumentException {
         int h = b.length;
         int w = b[0].length;
         double[][] res = new double[h][w];
@@ -101,7 +172,7 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] dotDiv(double[][] a, double b) throws IllegalArgumentException{
+    public static double[][] dotDiv(double[][] a, double b) throws IllegalArgumentException {
         int h = a.length;
         int w = a[0].length;
         double[][] res = new double[h][w];
@@ -114,35 +185,17 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[] dotDiv(double[] a, double b) throws IllegalArgumentException{
+    public static double[] dotDiv(double[] a, double b) throws IllegalArgumentException {
         int h = a.length;
         double[] res = new double[h];
         for (int i = 0; i < h; i++) {
-                res[i] = a[i] / b;
+            res[i] = a[i] / b;
         }
         return res;
     }
 
-    public static double[] mult(double[][] a, double[] b) throws IllegalArgumentException{
-        int h = a.length;
-        int la = a[0].length;
-        int lb = b.length;
-        double[] res = new double[h];
-        if (la != lb) {
-            throw new IllegalArgumentException("Matrices not multipliable!");
-        }
-        double sum;
-        for (int i = 0; i < h; i++) {
-                sum = 0.0;
-                for (int k = 0; k < la; k++) {
-                    sum += a[i][k] * b[k];
-                }
-                res[i] = sum;
-        }
-        return res;
-    }
 
-    public static double[][] dotMult(double[][] a, double[][] b) throws IllegalArgumentException{
+    public static double[][] dotMult(double[][] a, double[][] b) throws IllegalArgumentException {
         int ha = a.length;
         int wa = a[0].length;
         int hb = b.length;
@@ -160,8 +213,21 @@ public abstract class Alg {
         return res;
     }
 
+    public static double[] dotMult(double[] a, double[] b) throws IllegalArgumentException {
+        int ha = a.length;
+        int hb = b.length;
+        double[] res = new double[ha];
+        if (ha != hb) {
+            throw new IllegalArgumentException("Matrices not multipliable!");
+        }
+        for (int i = 0; i < ha; i++) {
+            res[i] = a[i] * b[i];
+        }
+        return res;
+    }
 
-    public static double[][] sum(double[][] a, double[][] b) throws IllegalArgumentException{
+
+    public static double[][] sum(double[][] a, double[][] b) throws IllegalArgumentException {
         int ha = a.length;
         int wb = b[0].length;
         int wa = a[0].length;
@@ -230,9 +296,24 @@ public abstract class Alg {
         return res;
     }
 
+    public static double[] sigmoidGrad(double[] a) {
+        int l = a.length;
+        double[] res = new double[l];
+        for (int i = 0; i < l; i++) {
+            res[i] = sigmoidGrad(a[i]);
+        }
+        return res;
+    }
+
     public static double sigmoid(double a) {
         return 1.0 / (1.0 + Math.exp(-a));
     }
+
+    public static double sigmoidGrad(double a) {
+        double g = sigmoid(a);
+        return g * (1.0 - g);
+    }
+
 
     public static double[][] log(double[][] a) {
         int h = a.length;
@@ -244,7 +325,7 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[][] sub(double[][] a, double[][] b) throws IllegalArgumentException{
+    public static double[][] sub(double[][] a, double[][] b) throws IllegalArgumentException {
         int ha = a.length;
         int wb = b[0].length;
         int wa = a[0].length;
@@ -261,7 +342,7 @@ public abstract class Alg {
         return res;
     }
 
-    public static double[] sub(double[] a, double[] b) throws IllegalArgumentException{
+    public static double[] sub(double[] a, double[] b) throws IllegalArgumentException {
         int ha = a.length;
         int hb = b.length;
         double[] res = new double[ha];
@@ -269,12 +350,12 @@ public abstract class Alg {
             throw new IllegalArgumentException("Matrices sizes not equals!");
         }
         for (int i = 0; i < ha; i++) {
-                res[i] = a[i] - b[i];
+            res[i] = a[i] - b[i];
         }
         return res;
     }
 
-    public static double[][] sub(double a, double[][] b) throws IllegalArgumentException{
+    public static double[][] sub(double a, double[][] b) throws IllegalArgumentException {
         int w = b[0].length;
         int h = b.length;
         double[][] res = new double[h][w];
