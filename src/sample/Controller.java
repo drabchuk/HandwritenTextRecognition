@@ -25,6 +25,8 @@ public class Controller {
     @FXML
     private ImageView imageViewer;
 
+    int i = 0;
+
     private File imgFile;
     private Desktop desktop = Desktop.getDesktop();
 
