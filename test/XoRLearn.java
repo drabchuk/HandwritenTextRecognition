@@ -27,7 +27,7 @@ public class XoRLearn {
         Function f = new NNFunc(trainer);
         //Gradient g = new GradientDescent(trainer.reshapeTheta(), 1000);
         //Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-3, 0.1);
-        Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-5, 3);
+        Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-5, 3, 100);
         double[] min = g.optimize(f);
         trainer.setTheta(min);
         prediction = nn.predict(tx);

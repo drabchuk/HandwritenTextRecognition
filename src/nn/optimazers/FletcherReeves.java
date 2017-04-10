@@ -6,27 +6,34 @@ public class FletcherReeves implements Gradient {
     private double[] x;
     private double error;
     private double lambda;
+    private int steps;
 
     static {
         System.out.println(FletcherReeves.class + " initialize");
     }
 
-    public FletcherReeves(double[] x, double e, double l){
+    public FletcherReeves(double[] x, double e, double l, int maxSteps){
         this.x = x;
         error = e;
         lambda = l;
+        steps = maxSteps;
     }
 
     @Override
     public double[] optimize(Function func) {
-
+        System.out.println("Optimization started");
+        System.out.println("lambda: " + lambda);
+        System.out.println("max steps: " + steps);
+        System.out.println("Criteria: " + error);
         way = minus(func.grad(x));
         double s;
+        int counter = 0;
         do {
             x = down();
             way = getWay(minus(func.grad(x)),way);
             s = sqrt(way);
-        }while (s > error);
+            System.out.println("step: " + counter++ + "cost: " + func.cost(x) + "criteria: " + s);
+        } while (s > error && counter < steps);
         return x;
     }
 

@@ -28,7 +28,7 @@ public class OptimizerTest {
         }
 
         Function f = new NNFunc(trainer);
-        Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 1e-4);
+        Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 1e-4, 100);
         double[] min = g.optimize(f);
         trainer.setTheta(min);
         prediction = nn.predict(tx);
