@@ -163,7 +163,6 @@ public abstract class Alg {
         int h = b.length;
         int w = b[0].length;
         double[][] res = new double[h][w];
-        double sum;
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 res[i][j] = a / b[i][j];
@@ -176,7 +175,6 @@ public abstract class Alg {
         int h = a.length;
         int w = a[0].length;
         double[][] res = new double[h][w];
-        double sum;
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 res[i][j] = a[i][j] / b;
@@ -311,7 +309,7 @@ public abstract class Alg {
 
     public static double sigmoidGrad(double a) {
         double g = sigmoid(a);
-        return g * (1.0 - g);
+        return g * (1. - g);
     }
 
 

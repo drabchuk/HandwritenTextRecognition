@@ -55,7 +55,7 @@ public class DFFNNTrainer extends NNTrainer {
         }
 
         for (int j = 0; j < depth - 1; j++) {
-            grad[j] = dotDiv(m, grad[j]);
+            grad[j] = dotDiv(grad[j], m);
         }
 
 
@@ -123,16 +123,28 @@ public class DFFNNTrainer extends NNTrainer {
         nn.setTheta(theta);
     }
 
-    private double cost() {
+    public double cost() {
         int tdLen = ty.length;
-        double[][] h = nn.predict(tx);
-        return -(sum(sum(
+        int outputSize = ty[0].length;
+        double[][] hp = nn.predict(tx);
+        /*return -(sum(sum(
                 sum(
                         dotMult(ty, log(h))
                         , dotMult(sub(1.0, ty), log (sub(1.0, h))))
                 )
         )
-        ) / (double) tdLen;
+        ) / (double) tdLen;*/
+        double sum = .0;
+        double y, h;
+        for (int i = 0; i < tdLen; i++) {
+            for (int j = 0; j < outputSize; j++) {
+                y = ty[i][j];
+                h = hp[i][j];
+                sum += -y * log(h) - (1. - y) * log(1 - h);
+            }
+        }
+        sum /= tdLen;
+        return sum;
     }
 
     @Override

@@ -7,10 +7,9 @@ import static nn.algebra.Alg.*;
  */
 public class GradientDescent implements Gradient{
 
-    private double[] way;
     private double[] x;
     private int steps;
-    private double alfa = 1e-6;
+    private double alfa = 10;
 
     static {
         System.out.println(FletcherReeves.class + " initialize");
@@ -26,15 +25,9 @@ public class GradientDescent implements Gradient{
         for (int i = 0; i < steps; i++) {
             double[] grad = func.grad(x);
             x = sub(x, dotMult(alfa, grad));
+            System.out.println(func.cost(x));
         }
         return x;
-    }
-
-    private double[] minus(double[] arr){
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = -arr[i];
-        }
-        return arr;
     }
 
 

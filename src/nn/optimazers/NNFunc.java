@@ -16,7 +16,8 @@ public class NNFunc implements Function {
 
     @Override
     public double cost(double[] x) {
-        return 0;
+        trainer.setTheta(x);
+        return trainer.cost();
     }
 
     @Override
