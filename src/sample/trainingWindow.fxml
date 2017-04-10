@@ -19,11 +19,11 @@
       <Label layoutX="214.0" layoutY="90.0" text="Y" />
       <Label layoutX="214.0" layoutY="54.0" text="X" />
       <TextField editable="false" layoutX="250.0" layoutY="86.0" />
-      <Button fx:id="chooseButton11" layoutX="406.0" layoutY="86.0" mnemonicParsing="false" text="Choose file" />
+      <Button fx:id="chooseYButton" layoutX="406.0" layoutY="86.0" mnemonicParsing="false" text="Choose file" />
       <Button layoutX="249.0" layoutY="188.0" mnemonicParsing="false" text="Learn NN" />
-      <Button fx:id="chooseButton1" layoutX="406.0" layoutY="50.0" mnemonicParsing="false" text="Choose file" />
+      <Button fx:id="chooseXButton" layoutX="406.0" layoutY="50.0" mnemonicParsing="false" text="Choose file" />
       <Label layoutX="250.0" layoutY="14.0" text="Load training set" />
       <TextField editable="false" layoutX="250.0" layoutY="50.0" />
-      <Button layoutX="250.0" layoutY="127.0" mnemonicParsing="false" text="Load" />
+      <Button fx:id="loadTrainButton" layoutX="250.0" layoutY="127.0" mnemonicParsing="false" text="Load" />
    </children>
 </AnchorPane>
