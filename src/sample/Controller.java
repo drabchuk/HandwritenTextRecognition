@@ -17,17 +17,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 
-
 public class Controller {
 
     @FXML
-    private Button chooseButton;
-
-    @FXML
-    private Button chooseXButton;
-
-    @FXML
-    private Button chooseYButton;
+    private Button chooseButton, chooseXButton, chooseYButton, startTestButton;
 
     @FXML
     private ImageView imageViewer;
@@ -37,7 +30,8 @@ public class Controller {
     private Desktop desktop = Desktop.getDesktop();
 
     private byte[][] imgs;
-    private byte[] labels;;
+    private byte[] labels;
+    ;
 
     @FXML
     public void initialize() {
@@ -59,7 +53,7 @@ public class Controller {
                 fileChooser.setTitle("Open X File");
                 File file = fileChooser.showOpenDialog(new Stage());
                 try {
-                    imgs = Parser.parseX(new RandomAccessFile(file ,"rw"));
+                    imgs = Parser.parseX(new RandomAccessFile(file, "rw"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -74,10 +68,17 @@ public class Controller {
                 fileChooser.setTitle("Open Y File");
                 File file = fileChooser.showOpenDialog(new Stage());
                 try {
-                    labels = Parser.parseY(new RandomAccessFile(file ,"rw"));
+                    labels = Parser.parseY(new RandomAccessFile(file, "rw"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        startTestButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // CODE FOR TEST BUTTON
             }
         });
     }
