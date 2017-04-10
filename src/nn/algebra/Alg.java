@@ -7,6 +7,17 @@ import java.util.Random;
  */
 public abstract class Alg {
 
+    public static double[][] rand(int h, int w) {
+        final double div = 10;
+        double[][] res = new double[h][w];
+        Random rand = new Random(System.currentTimeMillis());
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                res[i][j] = rand.nextDouble() / div;
+            }
+        }
+        return res;
+    }
 
 
     public static double[][] mult(double[][] a, double[][] b) throws IllegalArgumentException{
