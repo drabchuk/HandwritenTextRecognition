@@ -1,5 +1,6 @@
 package sample;
 
+import classes.CustomImage;
 import classes.Parser;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,31 +17,28 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-
-
 public class Controller {
 
     @FXML
-    private Button chooseButton;
+    private Button chooseButton, chooseXButton, chooseYButton, startTestButton, nextImgButton;
 
     @FXML
-    private Button chooseXButton;
-
-    @FXML
-    private Button chooseYButton;
-
-    @FXML
-    private ImageView imageViewer;
+    private ImageView randomDidgitImg;
 
 
     private File imgFile;
     private Desktop desktop = Desktop.getDesktop();
 
     private byte[][] imgs;
-    private byte[] labels;;
+    private byte[] labels;
+
+    final static int WIDTH = 28;
+    final static int HEIGHT = 28;
+
 
     @FXML
     public void initialize() {
+
 
         chooseButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -59,7 +57,7 @@ public class Controller {
                 fileChooser.setTitle("Open X File");
                 File file = fileChooser.showOpenDialog(new Stage());
                 try {
-                    imgs = Parser.parseX(new RandomAccessFile(file ,"rw"));
+                    imgs = Parser.parseX(new RandomAccessFile(file, "rw"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -74,12 +72,33 @@ public class Controller {
                 fileChooser.setTitle("Open Y File");
                 File file = fileChooser.showOpenDialog(new Stage());
                 try {
-                    labels = Parser.parseY(new RandomAccessFile(file ,"rw"));
+                    labels = Parser.parseY(new RandomAccessFile(file, "rw"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
 
+        startTestButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // CODE FOR TEST BUTTON
+            }
+        });
+
+        nextImgButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                byte[][] pixels = new byte[HEIGHT][WIDTH];
+                for (int i = 0; i < HEIGHT; i++) {
+                    for (int j = 0; j < WIDTH; j++) {
+                        pixels[i][j] = (byte) i;
+                    }
+                }
+
+                CustomImage customImg = new CustomImage(imgs[(int) (Math.random() * (imgs.length - 1))]);
+                randomDidgitImg.setImage(customImg.getWritableImage());
+            }
+        });
+    }
 }
