@@ -4,13 +4,17 @@ import classes.CustomImage;
 import classes.Parser;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import nn.NeuralNetwork;
+import vlad.reader.NeuralReader;
 
 import java.awt.*;
 import java.io.File;
@@ -25,10 +29,17 @@ public class Controller {
     @FXML
     private ImageView randomDidgitImg;
 
+    @FXML
+    private Label recognizedLabel;
+
+    @FXML
+    private javafx.scene.control.TextField resultError;
+
 
     private File imgFile;
     private Desktop desktop = Desktop.getDesktop();
 
+    private NeuralNetwork nn;
     private byte[][] imgs;
     private byte[] labels;
 
@@ -46,7 +57,7 @@ public class Controller {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open NN File");
                 File file = fileChooser.showOpenDialog(new Stage());
-
+                nn = NeuralReader.getReader().start(file);
             }
         });
 
@@ -83,6 +94,26 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 // CODE FOR TEST BUTTON
+                double[] prediction = new double[10];
+                double[] example = new double[784];
+                double sumError = 0.;
+                for (int i = 0; i < imgs.length; i++) {
+                    for (int j = 0; j < 784; j++) {
+                        example[j] = ((double) imgs[i][j]) / 128.;
+                    }
+                    prediction = nn.predict(example);
+                    int maxId = 0;
+                    double maxNum = 0.0;
+                    for (int j = 0; j < 10; j++) {
+                        if (maxNum < prediction[j]) {
+                            maxNum = prediction[j];
+                            maxId = j;
+                        }
+                    }
+                    if (maxId != labels[i]) sumError++;
+                }
+                sumError /= labels.length;
+                resultError.setText(String.valueOf(sumError));
             }
         });
 
@@ -95,9 +126,27 @@ public class Controller {
                         pixels[i][j] = (byte) i;
                     }
                 }
-
-                CustomImage customImg = new CustomImage(imgs[(int) (Math.random() * (imgs.length - 1))]);
+                int imgNum = (int) (Math.random() * (imgs.length - 1));
+                CustomImage customImg = new CustomImage(imgs[imgNum]);
                 randomDidgitImg.setImage(customImg.getWritableImage());
+
+                double[] example = new double[784];
+
+                for (int j = 0; j < 784; j++) {
+                    example[j] = ((double) imgs[imgNum][j]) / 128.;
+                }
+                double[] prediction = nn.predict(example);
+                int maxId = 0;
+                double maxNum = 0.0;
+                for (int j = 0; j < 10; j++) {
+                    if (maxNum < prediction[j]) {
+                        maxNum = prediction[j];
+                        maxId = j;
+                    }
+                }
+                recognizedLabel.setText(String.valueOf(maxId)
+                );
+
             }
         });
     }

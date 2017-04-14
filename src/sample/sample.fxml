@@ -23,11 +23,11 @@
       <TextField editable="false" layoutX="80.0" layoutY="164.0" prefHeight="25.0" prefWidth="33.0" />
       <Label layoutX="113.0" layoutY="168.0" text="\% error" />
       <Button fx:id="chooseYButton" layoutX="506.0" layoutY="100.0" mnemonicParsing="false" text="Choose file" />
-      <TextField editable="false" layoutX="350.0" layoutY="100.0" />
+      <TextField fx:id="resultError" editable="false" layoutX="350.0" layoutY="100.0" />
       <Label layoutX="314.0" layoutY="68.0" text="X" />
       <Label layoutX="314.0" layoutY="104.0" text="Y" />
       <ImageView fx:id="randomDidgitImg" fitHeight="150.0" fitWidth="200.0" layoutX="34.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="304.0" layoutY="249.0" text="Label" />
+      <Label layoutX="304.0" layoutY="249.0" text="Label" fx:id="recognizedLabel"/>
       <Button fx:id="nextImgButton" layoutX="306.0" layoutY="281.0" mnemonicParsing="false" text="Next" />
    </children>
 </AnchorPane>

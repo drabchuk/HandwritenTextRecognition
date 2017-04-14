@@ -145,7 +145,7 @@ public class TrainingWindowController {
                 Function f = new NNFunc(trainer);
                 //Gradient g = new GradientDescent(trainer.reshapeTheta(), 1000);
                 //Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-3, 0.1);
-                Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-2, 0.5, 10);
+                Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 10, 150);
                 double[] min = g.optimize(f);
                 System.out.println("Learning completed.");
                 trainer.setTheta(min);

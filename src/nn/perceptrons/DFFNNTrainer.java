@@ -104,7 +104,7 @@ public class DFFNNTrainer extends NNTrainer {
     public void setTheta(double[] newTheta) {
         int depth = nn.getDepth();
         int[] layerSizes = nn.getLayerSizes();
-        double[][][] theta = new double[depth][][];
+        double[][][] theta = new double[depth - 1][][];
         for (int i = 0; i < depth - 1; i++) {
             theta[i] = new double[layerSizes[i + 1]][layerSizes[i] + 1];
         }
