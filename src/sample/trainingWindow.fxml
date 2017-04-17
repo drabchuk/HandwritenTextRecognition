@@ -6,7 +6,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TrainingWindowController">
    <children>
-      <Label layoutX="27.0" layoutY="37.0" text="Depth" />
       <TextField fx:id="depthField" layoutX="72.0" layoutY="33.0" prefHeight="25.0" prefWidth="33.0" />
       <TableView fx:id="trainingTable" layoutX="27.0" layoutY="82.0" prefHeight="200.0" prefWidth="155.0">
         <columns>
@@ -14,16 +13,27 @@
           <TableColumn fx:id="valueColumn" prefWidth="75.0" text="Value" />
         </columns>
       </TableView>
-      <Label layoutX="245.0" layoutY="265.0" text="Result" />
-      <Button fx:id="saveNN" layoutX="244.0" layoutY="290.0" mnemonicParsing="false" text="Save as" />
-      <Label layoutX="214.0" layoutY="90.0" text="Y" />
-      <Label layoutX="214.0" layoutY="54.0" text="X" />
-      <TextField editable="false" layoutX="250.0" layoutY="86.0" />
-      <Button fx:id="chooseYButton" layoutX="406.0" layoutY="86.0" mnemonicParsing="false" text="Choose file" />
-      <Button layoutX="249.0" layoutY="188.0" mnemonicParsing="false" text="Learn NN" />
-      <Button fx:id="chooseXButton" layoutX="406.0" layoutY="50.0" mnemonicParsing="false" text="Choose file" />
+      <Button fx:id="saveNN" layoutX="330.0" layoutY="338.0" mnemonicParsing="false" text="Save as" />
+      <Button fx:id="chooseYButton" layoutX="263.0" layoutY="86.0" mnemonicParsing="false" text="Choose file" />
+      <Button fx:id="chooseXButton" layoutX="263.0" layoutY="50.0" mnemonicParsing="false" text="Choose file" />
+      <Button fx:id="loadTrainButton" layoutX="251.0" layoutY="188.0" mnemonicParsing="false" text="Learn NN" />
+      <TextField fx:id="criteriaField" layoutX="481.0" layoutY="188.0" prefHeight="25.0" prefWidth="75.0" />
+      <TextField fx:id="stepLengthField" layoutX="481.0" layoutY="230.0" prefHeight="25.0" prefWidth="75.0" />
+      <TextField fx:id="maxStepsField" layoutX="481.0" layoutY="270.0" prefHeight="25.0" prefWidth="75.0" />
+      <TextField fx:id="maxTimeField" layoutX="482.0" layoutY="305.0" prefHeight="25.0" prefWidth="75.0" />
+      <Label fx:id="loadXStatus" layoutX="357.0" layoutY="54.0" text="not loaded" />
+      <Label fx:id="loadYStatus" layoutX="357.0" layoutY="90.0" text="not loaded" />
+      <Label layoutX="407.0" layoutY="192.0" text="Criteria" />
+      <Label layoutX="406.0" layoutY="234.0" text="Step length" />
+      <Label layoutX="406.0" layoutY="274.0" text="Max steps" />
+      <Label layoutX="27.0" layoutY="37.0" text="Depth" />
+      <Label layoutX="412.0" layoutY="342.0" />
+      <Label layoutX="426.0" layoutY="152.0" text="Optimization params" />
+      <Label fx:id="learningStatus" layoutX="250.0" layoutY="226.0" text="click learn nn" />
+      <Label layoutX="241.0" layoutY="90.0" text="Y" />
+      <Label layoutX="240.0" layoutY="54.0" text="X" />
       <Label layoutX="250.0" layoutY="14.0" text="Load training set" />
-      <TextField editable="false" layoutX="250.0" layoutY="50.0" />
-      <Button fx:id="loadTrainButton" layoutX="250.0" layoutY="127.0" mnemonicParsing="false" text="Load" />
+      <Label layoutX="407.0" layoutY="309.0" text="Max time (m)" />
+
    </children>
 </AnchorPane>

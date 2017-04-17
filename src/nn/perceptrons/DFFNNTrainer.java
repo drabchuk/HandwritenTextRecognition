@@ -2,6 +2,7 @@ package nn.perceptrons;
 
 import nn.NNTrainer;
 import nn.NeuralNetwork;
+import nn.optimazers.*;
 
 import static nn.algebra.Alg.*;
 import static nn.algebra.Alg.log;
@@ -22,7 +23,31 @@ public class DFFNNTrainer extends NNTrainer {
 
     @Override
     public void train() {
+        Function f = new NNFunc(this);
+        OptimizationMethod1Order g = new FletcherReeves(this.reshapeTheta(), 10, 1e-4, 5);
+        double[] min = g.optimize(f);
+        this.setTheta(min);
+    }
 
+    public void train(double criteria, double stepLength, int maxSteps) {
+        Function f = new NNFunc(this);
+        OptimizationMethod1Order g = new FletcherReeves(this.reshapeTheta(), criteria, stepLength, maxSteps);
+        double[] min = g.optimize(f);
+        this.setTheta(min);
+    }
+
+    public void train(int maxSteps, double alfa) {
+        Function f = new NNFunc(this);
+        OptimizationMethod1Order g = new GradientDescent(this.reshapeTheta(), maxSteps, alfa);
+        double[] min = g.optimize(f);
+        this.setTheta(min);
+    }
+
+    public void trainTimeBound(int maxSteps, double alfa, int maxTime) {
+        Function f = new NNFunc(this);
+        OptimizationMethod1Order g = new GradientDescent(this.reshapeTheta(), maxSteps, alfa);
+        double[] min = g.optimize(f, maxTime);
+        this.setTheta(min);
     }
 
     public double[][][] grad() {
@@ -140,7 +165,12 @@ public class DFFNNTrainer extends NNTrainer {
             for (int j = 0; j < outputSize; j++) {
                 y = ty[i][j];
                 h = hp[i][j];
-                sum += -y * log(h) - (1. - y) * log(1 - h);
+                if (y > 0.5) {//one
+                    sum -= log(h);
+                } else {
+                    sum -= log(1. - h);
+                }
+                //sum += -y * log(h) - (1. - y) * log(1 - h);
             }
         }
         sum /= tdLen;

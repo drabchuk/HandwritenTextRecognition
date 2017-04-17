@@ -1,7 +1,3 @@
-import nn.optimazers.Function;
-import nn.optimazers.Gradient;
-import nn.optimazers.GradientDescent;
-import nn.optimazers.NNFunc;
 import nn.perceptrons.DFFNNTrainer;
 import nn.perceptrons.DeepFeedforwardNN;
 

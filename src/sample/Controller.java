@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import static nn.data.ImgBrightnessMapper.map;
+
 public class Controller {
 
     @FXML
@@ -99,7 +101,7 @@ public class Controller {
                 double sumError = 0.;
                 for (int i = 0; i < imgs.length; i++) {
                     for (int j = 0; j < 784; j++) {
-                        example[j] = ((double) imgs[i][j]) / 128.;
+                        example[j] = map(imgs[i][j]);
                     }
                     prediction = nn.predict(example);
                     int maxId = 0;
@@ -133,7 +135,7 @@ public class Controller {
                 double[] example = new double[784];
 
                 for (int j = 0; j < 784; j++) {
-                    example[j] = ((double) imgs[imgNum][j]) / 128.;
+                    example[j] = map(imgs[imgNum][j]);
                 }
                 double[] prediction = nn.predict(example);
                 int maxId = 0;

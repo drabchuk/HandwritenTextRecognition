@@ -1,6 +1,6 @@
 package nn.optimazers;
 
-public class FletcherReeves implements Gradient {
+public class FletcherReeves implements OptimizationMethod1Order {
 
     private double[] way;
     private double[] x;
@@ -35,6 +35,11 @@ public class FletcherReeves implements Gradient {
             System.out.println("step: " + counter++ + "cost: " + func.cost(x) + "criteria: " + s);
         } while (s > error && counter < steps);
         return x;
+    }
+
+    @Override
+    public double[] optimize(Function func, int maxTime) {
+        return new double[0];
     }
 
     private double[] minus(double[] arr){

@@ -6,21 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import nn.*;
-import nn.optimazers.FletcherReeves;
-import nn.optimazers.Function;
-import nn.optimazers.Gradient;
-import nn.optimazers.NNFunc;
 import nn.perceptrons.DFFNNTrainer;
 import nn.perceptrons.DeepFeedforwardNN;
 
@@ -28,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import static nn.algebra.Alg.rand;
+import static nn.data.ImgBrightnessMapper.map;
 
 public class TrainingWindowController {
 
@@ -56,6 +47,27 @@ public class TrainingWindowController {
     @FXML
     private Button saveNN;
 
+    @FXML
+    private TextField criteriaField;
+
+    @FXML
+    private TextField stepLengthField;
+
+    @FXML
+    private TextField maxStepsField;
+
+    @FXML
+    private TextField maxTimeField;
+
+    @FXML
+    private Label loadXStatus;
+
+    @FXML
+    private Label loadYStatus;
+
+    @FXML
+    private Label learningStatus;
+
     private ObservableList<TrainingView> trainingProperties = FXCollections.observableArrayList();
 
     private DeepFeedforwardNN nn;
@@ -63,6 +75,10 @@ public class TrainingWindowController {
     private byte[] labels;
     private int depth;
     private int[] sizes;
+    private double criteria;
+    private double stepLength;
+    private int maxSteps;
+    private int maxTime;
 
 
     @FXML
@@ -88,19 +104,45 @@ public class TrainingWindowController {
 
         });
 
+        criteriaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            criteria = Double.parseDouble(newValue);
+            if (newValue.equals(""))
+                newValue = "0";
+
+        });
+
+        stepLengthField.textProperty().addListener((observable, oldValue, newValue) -> {
+            stepLength = Double.parseDouble(newValue);
+            if (newValue.equals(""))
+                newValue = "0";
+
+        });
+
+        maxStepsField.textProperty().addListener((observable, oldValue, newValue) -> {
+            maxSteps = Integer.parseInt(newValue);
+            if (newValue.equals(""))
+                newValue = "0";
+
+        });
+
+        maxTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            maxTime = Integer.parseInt(newValue);
+        });
+
         chooseYButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open X File");
+                fileChooser.setTitle("Open Y File");
                 try {
-                    labels = Parser.parseY(new RandomAccessFile(new File(fileChooser.showOpenDialog(new Stage()).toURI()), "rw"));
+                    loadYStatus.setText("loading...");
+                    File file = new File(fileChooser.showOpenDialog(new Stage()).toURI());
+                    labels = Parser.parseY(new RandomAccessFile(file, "rw"));
+                    loadYStatus.setText(file.getName());
                 } catch (IOException e) {
+                    loadYStatus.setText("fail");
                     e.printStackTrace();
                 }
-
-//                Image img = new Image(imgFile.toURI().toString());
-                //  imageViewer.setImage(img);
             }
         });
 
@@ -110,19 +152,23 @@ public class TrainingWindowController {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open X File");
                 try {
-                    imgs = Parser.parseX(new RandomAccessFile(new File(fileChooser.showOpenDialog(new Stage()).toURI()), "rw"));
+                    loadXStatus.setText("loading...");
+                    File file = new File(fileChooser.showOpenDialog(new Stage()).toURI());
+                    imgs = Parser.parseX(new RandomAccessFile(file, "rw"));
+                    loadXStatus.setText(file.getName());
                 } catch (IOException e) {
+                    loadXStatus.setText("fail");
                     e.printStackTrace();
                 }
-
-//                Image img = new Image(imgFile.toURI().toString());
-                //  imageViewer.setImage(img);
             }
         });
 
         loadTrainButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+
+                learningStatus.setText("Learning started");
+
                 double[][] lbls = new double[labels.length][10];
                 for (int i = 0; i < labels.length; i++) {
                     lbls[i][labels[i]] = 1.;
@@ -130,7 +176,7 @@ public class TrainingWindowController {
                 double[][] images = new double[imgs.length][784];
                 for (int i = 0; i < imgs.length; i++) {
                     for (int j = 0; j < 784; j++) {
-                        images[i][j] = (double) imgs[i][j] / 128.;
+                        images[i][j] = map(imgs[i][j]);
                     }
                 }
 
@@ -142,13 +188,9 @@ public class TrainingWindowController {
 
                 nn = new DeepFeedforwardNN(depth, sizes);
                 DFFNNTrainer trainer = new DFFNNTrainer(nn, images, lbls);
-                Function f = new NNFunc(trainer);
-                //Gradient g = new GradientDescent(trainer.reshapeTheta(), 1000);
-                //Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-3, 0.1);
-                Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 10, 150);
-                double[] min = g.optimize(f);
+                trainer.trainTimeBound(maxSteps, stepLength, maxTime);
                 System.out.println("Learning completed.");
-                trainer.setTheta(min);
+                learningStatus.setText("Learning completed.");
 
             }
         });
@@ -156,7 +198,7 @@ public class TrainingWindowController {
             @Override
             public void handle(MouseEvent event) {
                 FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open X File");
+                fileChooser.setTitle("Save File");
                 File file =  fileChooser.showOpenDialog(new Stage());
                 try {
                     nn.saveWeights(file);

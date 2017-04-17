@@ -1,6 +1,6 @@
 import nn.optimazers.FletcherReeves;
 import nn.optimazers.Function;
-import nn.optimazers.Gradient;
+import nn.optimazers.OptimizationMethod1Order;
 import nn.optimazers.NNFunc;
 import nn.perceptrons.DFFNNTrainer;
 import nn.perceptrons.DeepFeedforwardNN;
@@ -28,7 +28,7 @@ public class OptimizerTest {
         }
 
         Function f = new NNFunc(trainer);
-        Gradient g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 1e-4, 100);
+        OptimizationMethod1Order g = new FletcherReeves(trainer.reshapeTheta(), 1e-4, 1e-4, 100);
         double[] min = g.optimize(f);
         trainer.setTheta(min);
         prediction = nn.predict(tx);
